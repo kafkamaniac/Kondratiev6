@@ -1,3 +1,7 @@
+MIN_FIO_PARTS = 2
+MIN_PHONE_LENGTH = 10
+
+
 """Класс Person
 — Поля: ФИО, почта, телефон.
 — __init__ принимает их в сыром виде, приводит в порядок и проверяет.
@@ -16,7 +20,7 @@ class Person:
     @staticmethod
     def validate_fio(fio):
         # Проверка ФИО
-        if not isinstance(fio, str) or len(fio.split()) < 2:
+        if not isinstance(fio, str) or len(fio.split()) < MIN_FIO_PARTS:
             raise AnketaError("ФИО должно содержать как минимум фамилию и имя.")
 
     @staticmethod
@@ -27,8 +31,7 @@ class Person:
 
     @staticmethod
     def validate_phone(phone):
-        # Проверка телефона
-        if not phone.isdigit() or len(phone) < 10:
+        if not isinstance(phone, str) or not phone.isdigit() or len(phone) < MIN_PHONE_LENGTH:
             raise AnketaError("Телефон должен содержать только цифры и быть не менее 10 символов.")
 
     def masked_phone(self):
@@ -65,9 +68,12 @@ class AnketaError(Exception):
 class Student(Person):
     def __init__(self, fio, email, phone, group):
         super().__init__(fio, email, phone)
+
         if not group:
             raise AnketaError("Группа не может быть пустой.")
+
         self.group = group
+
 
     def role(self):
         return "Student"
