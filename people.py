@@ -50,7 +50,7 @@ class Person:
         return ""
 
     def __str__(self):
-        return f"{self.fio}, {self.email}, {self.masked_phone()}"
+        return f"{self.fio}, {self.email}, {self.masked_phone()}, {self.extra()}"
 
     def __lt__(self, other):
         return self.fio < other.fio

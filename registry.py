@@ -26,19 +26,29 @@ class Registry:
                         continue
                     try:
                         parts = line.split(",")
-                        if len(parts) < 4:
-                            raise AnketaError("Недостаточно данных для анкеты.")
+                        if len(parts) != 4:
+                            raise AnketaError("Некорректное количество полей.")
+
                         fio, email, phone, extra = parts[0], parts[1], parts[2], parts[3]
                         if "Student" in extra:
-                            group = extra.split(":")[1].strip()
-                            student = Student(fio, email, phone, group)
-                            self.add(student)
+                            if extra.startswith("Student:"):
+                                group = extra.split(":", 1)[1].strip()
+                                student = Student(fio, email, phone, group)
+                                self.add(student)
+                            elif extra.startswith("Teacher:"):
+                                department = extra.split(":", 1)[1].strip()
+                                teacher = Teacher(fio, email, phone, department)
+                                self.add(teacher)
+                            else:
+                                raise AnketaError("Неизвестная роль.")
+                            
                         elif "Teacher" in extra:
                             department = extra.split(":")[1].strip()
                             teacher = Teacher(fio, email, phone, department)
                             self.add(teacher)
                         else:
                             raise AnketaError("Неизвестная роль.")
+                        
                     except AnketaError as e:
                         self.errors.append(f"{line} | Error: {str(e)}")
             return True
