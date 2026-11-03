@@ -13,9 +13,20 @@ MIN_PHONE_LENGTH = 10
 
 class Person:
     def __init__(self, fio, email, phone):
+        fio = fio.strip()
+        email = email.strip()
+        phone = phone.strip()
+
+        self.validate_fio(fio)
+        self.validate_email(email)
+        self.validate_phone(phone)
+
         self.fio = fio
         self.email = email
         self.phone = phone
+        
+    def group_name(self):
+        return None
 
     @staticmethod
     def validate_fio(fio):
@@ -35,7 +46,7 @@ class Person:
             raise AnketaError("Телефон должен содержать только цифры и быть не менее 10 символов.")
 
     def masked_phone(self):
-        return f"{self.phone[:3]}****{self.phone[-2:]}"
+        return f"+7 ({self.phone[1:4]}) ***-**-{self.phone[-2:]}"
 
     def short_fio(self):
         parts = self.fio.split()
@@ -68,18 +79,22 @@ class AnketaError(Exception):
 class Student(Person):
     def __init__(self, fio, email, phone, group):
         super().__init__(fio, email, phone)
-
+        
+        group = group.strip()
+        
         if not group:
             raise AnketaError("Группа не может быть пустой.")
 
         self.group = group
 
+    def group_name(self):
+        return self.group
 
     def role(self):
         return "Student"
 
     def extra(self):
-        return f"Group: {self.group}"
+        return self.group
     
 class Teacher(Person):
     def __init__(self, fio, email, phone, department):
@@ -92,4 +107,4 @@ class Teacher(Person):
         return "Teacher"
 
     def extra(self):
-        return f"Department: {self.department}"
+        return self.department

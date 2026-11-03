@@ -20,38 +20,36 @@ class Registry:
     def load(self, filename):
         try:
             with open(filename, "r", encoding="utf-8") as file:
-                for line in file:
-                    line = line.strip()
-                    if not line:
+                for line_number, line in enumerate(file, start=1):
+                    original_line = line.rstrip("\r\n")
+
+                    if not original_line.strip():
                         continue
+
                     try:
-                        parts = line.split(",")
-                        if len(parts) != 4:
+                        parts = [part.strip() for part in original_line.split(";")]
+
+                        if len(parts) != 5:
                             raise AnketaError("Некорректное количество полей.")
 
-                        fio, email, phone, extra = parts[0], parts[1], parts[2], parts[3]
-                        if "Student" in extra:
-                            if extra.startswith("Student:"):
-                                group = extra.split(":", 1)[1].strip()
-                                student = Student(fio, email, phone, group)
-                                self.add(student)
-                            elif extra.startswith("Teacher:"):
-                                department = extra.split(":", 1)[1].strip()
-                                teacher = Teacher(fio, email, phone, department)
-                                self.add(teacher)
-                            else:
-                                raise AnketaError("Неизвестная роль.")
-                            
-                        elif "Teacher" in extra:
-                            department = extra.split(":")[1].strip()
-                            teacher = Teacher(fio, email, phone, department)
-                            self.add(teacher)
+                        person_type, fio, email, phone, extra = parts
+
+                        if person_type == "s":
+                            person = Student(fio, email, phone, extra)
+                        elif person_type == "t":
+                            person = Teacher(fio, email, phone, extra)
                         else:
-                            raise AnketaError("Неизвестная роль.")
-                        
+                            raise AnketaError("Неизвестный тип анкеты.")
+
+                        self.add(person)
+
                     except AnketaError as e:
-                        self.errors.append(f"{line} | Error: {str(e)}")
+                        self.errors.append(
+                            f"Строка {line_number}: {original_line} | Error: {e}"
+                        )
+
             return True
+
         except FileNotFoundError:
             return False
 
@@ -65,8 +63,8 @@ class Registry:
     def statistics_by_group(self):
         stats = {}
         for person in self.accepted:
-            if isinstance(person, Student):
-                group = person.group
+            group = person.group_name()
+            if group:
                 stats[group] = stats.get(group, 0) + 1
         return stats
 
