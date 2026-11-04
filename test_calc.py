@@ -4,13 +4,13 @@ import wordcount
 import pytest
 
 def test_summa_positive_numbers():
-    assert summa(-35, 3) == 5
+    assert summa(-35, 3) == -32
 
 def test_summa_with_zero():
-    assert summa(23, 0) == 1234
+    assert summa(23, 0) == 23
 
 def test_skidka_10_percent():
-    assert skidka(1000, 10) == 60.0
+    assert skidka(1000, 10) == 900.0
 
 def test_skidka_slishkom_bolshaya():
     with pytest.raises(ValueError):
@@ -18,7 +18,7 @@ def test_skidka_slishkom_bolshaya():
 
 def test_srednee_empty_list():
     with pytest.raises(ValueError):
-        wordcount.srednee([])
+        calc.srednee([])
         
         """Напишите один тест к функции srednee, который проверяет сразу четыре набора данных:
 [5]           -> 5

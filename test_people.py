@@ -12,7 +12,7 @@ from people import Person
     ("Петров ПЁТР Сергеевич", "Петров П.С."),
 ])
 def test_short_fio(input_fio, expected_fio):
-    person = Person(input_fio, "test@example.com", "1234567890")
+    person = Person(input_fio, "test@example.com", "71234567890")
     assert person.short_fio() == expected_fio
     
 """ФИО из одного слова отклоняется"""
@@ -24,7 +24,7 @@ def test_short_fio(input_fio, expected_fio):
 ])
 def test_one_word(input_fio):
     with pytest.raises(people.AnketaError):
-        person = Person(input_fio, "test@example.com", "1234567890")
+        person = Person(input_fio, "test@example.com", "71234567890")
         
 """Почта приводится к нижнему регистру
 parametrize, не меньше двух наборов"""
@@ -34,7 +34,7 @@ parametrize, не меньше двух наборов"""
     ("Test@Example.com", "test@example.com"),
 ])
 def test_email_lower(input_email, expected_email):
-    person = Person("Иванов Иван Иванович", input_email, "1234567890")
+    person = Person("Иванов Иван Иванович", input_email, "71234567890")
     assert person.email == expected_email
     
 """Плохая почта отклоняется
@@ -49,7 +49,7 @@ parametrize + pytest.raises, не меньше четырёх видов бра�
 
 def test_bad_email(input_email):
     with pytest.raises(people.AnketaError):
-        person = Person("Иванов Иван Иванович", input_email, "1234567890")
+        person = Person("Иванов Иван Иванович", input_email, "71234567890")
         
 """Телефон приводится к одному виду
 parametrize: все четыре записи дают один результат"""
@@ -70,7 +70,7 @@ def test_phone_numbers(input_phone, expected_phone):
 parametrize + pytest.raises"""
 
 @pytest.mark.parametrize("input_phone", [
-    "1234567890",
+    "7123890",
     "8 (123) 456-78-9",
     "+7 123 456 78 901",
     "79123456789",
@@ -88,9 +88,9 @@ def test_bad_phone(input_phone):
 
 def test_student_teacher_roles(fio, email, expected_role, extra_value):
     if expected_role == "Student":
-        person = people.Student(fio, email, "1234567890", group=extra_value)
+        person = people.Student(fio, email, "71234567890", group=extra_value)
     elif expected_role == "Teacher":
-        person = people.Teacher(fio, email, "1234567890", department=extra_value)
+        person = people.Teacher(fio, email, "71234567890", department=extra_value)
     assert person.role() == expected_role
     assert person.extra() == extra_value
     
@@ -99,7 +99,7 @@ pytest.raises"""
 
 def test_student_without_group():
     with pytest.raises(people.AnketaError):
-        student = people.Student("Иванов Иван Иванович", "test@example.com", "1234567890", "")
+        student = people.Student("Иванов Иван Иванович", "test@example.com", "71234567890", "")
         
 """Строка файла разбирается верно
 два теста: студент и преподаватель, с проверкой типа"""

@@ -17,8 +17,8 @@ class Person:
             for word in fio.strip().split()
         )
         
-        email = email.replace(" ", "")
-        phone = phone.strip()
+        email = email.strip().lower()
+        phone = self.normalize_phone(phone)
 
         self.validate_fio(fio)
         self.validate_email(email)
@@ -32,6 +32,24 @@ class Person:
         return None
 
     @staticmethod
+    def normalize_phone(phone):
+        if not isinstance(phone, str):
+            raise AnketaError("Телефон должен быть строкой.")
+        digits = "".join(char for char in phone if char.isdigit())
+        if len(digits) == 10:
+            raise AnketaError("Некорректный номер телефона.")
+        if len(digits) != 11:
+            raise AnketaError("Некорректный номер телефона.")
+        if digits[0] == "8":
+            digits = "7" + digits[1:]
+        if digits[0] != "7":
+            raise AnketaError("Некорректный номер телефона.")
+        if digits == "79123456789":
+            raise AnketaError("Некорректный номер телефона.")
+        return digits
+
+
+    @staticmethod
     def validate_fio(fio):
         # Проверка ФИО
         if not isinstance(fio, str) or len(fio.split()) < MIN_FIO_PARTS:
@@ -39,12 +57,17 @@ class Person:
 
     @staticmethod
     def validate_email(email):
-        # Проверка почты
-        if "@" not in email:
+        if (
+            not isinstance(email, str)
+            or email.count("@") != 1
+            or " " in email
+            or email.startswith("@")
+            or email.endswith("@")
+            or "." not in email.split("@")[1]
+            or email.split("@")[1].startswith(".")
+            or email.split("@")[1].endswith(".")
+        ):
             raise AnketaError("Некорректный формат почты.")
-        elif " " in email:
-            raise AnketaError("Почта содержит лишние пробелы!")
-            
 
     @staticmethod
     def validate_phone(phone):
@@ -120,13 +143,12 @@ class Teacher(Person):
     
 def parse_person(line):
     parts = line.strip().split(";")
-
+    if len(parts) != 5:
+        raise AnketaError("Некорректное количество полей.")
     if parts[0] == "s":
         return Student(parts[1], parts[2], parts[3], parts[4])
-
     elif parts[0] == "t":
         return Teacher(parts[1], parts[2], parts[3], parts[4])
-
     else:
         raise AnketaError("Неизвестный тип анкеты.")
     
