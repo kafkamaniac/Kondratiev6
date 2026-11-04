@@ -13,8 +13,11 @@ MIN_PHONE_LENGTH = 10
 
 class Person:
     def __init__(self, fio, email, phone):
-        fio = fio.strip()
-        email = email.strip()
+        fio = " ".join("-".join(part.capitalize() for part in word.split("-"))
+            for word in fio.strip().split()
+        )
+        
+        email = email.replace(" ", "")
         phone = phone.strip()
 
         self.validate_fio(fio)
@@ -39,6 +42,9 @@ class Person:
         # Проверка почты
         if "@" not in email:
             raise AnketaError("Некорректный формат почты.")
+        elif " " in email:
+            raise AnketaError("Почта содержит лишние пробелы!")
+            
 
     @staticmethod
     def validate_phone(phone):
@@ -64,7 +70,10 @@ class Person:
         return f"{self.fio}, {self.email}, {self.masked_phone()}, {self.extra()}"
 
     def __lt__(self, other):
-        return self.fio < other.fio
+        fio1 = self.fio.replace("Ё", "Е").replace("ё", "е")
+        fio2 = other.fio.replace("Ё", "Е").replace("ё", "е")
+
+        return fio1 < fio2
 
 class AnketaError(Exception):
     pass
@@ -108,3 +117,30 @@ class Teacher(Person):
 
     def extra(self):
         return self.department
+    
+def parse_person(line):
+    parts = line.strip().split(";")
+
+    if parts[0] == "s":
+        return Student(parts[1], parts[2], parts[3], parts[4])
+
+    elif parts[0] == "t":
+        return Teacher(parts[1], parts[2], parts[3], parts[4])
+
+    else:
+        raise AnketaError("Неизвестный тип анкеты.")
+    
+    
+"""Владимир Маяковский
+Ничего не понимают
+Вошел к парикмахеру, сказал – спокойный!
+«Будьте добры, причешите мне уши».
+Гладкий парикмахер сразу стал хвойный,
+лицо вытянулось, как у груши.
+«Сумасшедший!
+Рыжий!» –
+запрыгали слова.
+Ругань металась от писка до писка,
+и до-о-о-о-лго
+хихикала чья-то голова,
+выдергиваясь из толпы, как старая редиска."""
