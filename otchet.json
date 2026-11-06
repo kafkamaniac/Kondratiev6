@@ -1,0 +1,99 @@
+{
+    "accepted_count": 8,
+    "rejected_count": 7,
+    "accepted": [
+        {
+            "fio": "Иванов Иван Петрович",
+            "email": "ivanov@mail.ru",
+            "phone": "79211112233",
+            "role": "Student",
+            "extra": "09с33"
+        },
+        {
+            "fio": "Петров Пётр Сергеевич",
+            "email": "petrov@voenmeh.ru",
+            "phone": "79217654321",
+            "role": "Teacher",
+            "extra": "Кафедра И9"
+        },
+        {
+            "fio": "Петрова Анна",
+            "email": "petrova@yandex.ru",
+            "phone": "79217654321",
+            "role": "Student",
+            "extra": "09с33"
+        },
+        {
+            "fio": "Морозова Екатерина",
+            "email": "morozova@mail.ru",
+            "phone": "79215556677",
+            "role": "Student",
+            "extra": "09с35"
+        },
+        {
+            "fio": "Соколова Мария",
+            "email": "sokolova@gmail.com",
+            "phone": "79217776655",
+            "role": "Teacher",
+            "extra": "Кафедра И3"
+        },
+        {
+            "fio": "Фёдоров Максим",
+            "email": "fedorov@mail.ru",
+            "phone": "79210001122",
+            "role": "Student",
+            "extra": "09с37"
+        },
+        {
+            "fio": "Николаев Алексей",
+            "email": "nikolaev@mail.ru",
+            "phone": "79213334455",
+            "role": "Teacher",
+            "extra": "Кафедра И2"
+        },
+        {
+            "fio": "Романов Дмитрий",
+            "email": "romanov@mail.ru",
+            "phone": "79216667788",
+            "role": "Student",
+            "extra": "09с38"
+        }
+    ],
+    "rejected": [
+        {
+            "questionary": 4,
+            "error": "ФИО должно содержать как минимум фамилию и имя."
+        },
+        {
+            "questionary": 5,
+            "error": "Некорректный формат почты."
+        },
+        {
+            "questionary": 7,
+            "error": "Некорректный номер телефона."
+        },
+        {
+            "questionary": 9,
+            "error": "Некорректное количество полей."
+        },
+        {
+            "questionary": 10,
+            "error": "Неизвестный тип анкеты."
+        },
+        {
+            "questionary": 13,
+            "error": "Кафедра не может быть пустой."
+        },
+        {
+            "questionary": 16,
+            "error": "ФИО должно содержать как минимум фамилию и имя."
+        }
+    ],
+    "roles": {
+        "students": 5,
+        "teachers": 3
+    },
+    "data_source": "file",
+    "server_statistics": null,
+    "mail_results": []
+}
