@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %}Ошибка{% endblock %} {% block content
+%}
+
+<h2>Произошла ошибка</h2>
+
+<p class="error">{{ error }}</p>
+
+<a href="{{ url_for('get_accepted_questionaries') }}">Вернуться на главную</a>
+
+{% endblock %}

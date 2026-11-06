@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %}Список студентов{% endblock %} {%
+block heading %}Список студентов{% endblock %} {% block content %}
+
+<h2>Состав людей в {{ name }}</h2>
+
+{% if spisok %}
+
+<table>
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>ФИО</th>
+      <th>Email</th>
+      <th>Телефон</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for person in spisok %}
+    <tr>
+      <td>{{ person.number }}</td>
+      <td>
+        <a href="{{ url_for('get_one_questionary', number=person.number) }}">
+          {{ person.fio }}
+        </a>
+      </td>
+      <td>{{ person.email }}</td>
+      <td>{{ person.phone }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+
+<p>В этой группе пока нет студентов.</p>
+
+{% endif %}
+
+<a href="{{ url_for('get_accepted_questionaries') }}"
+  >Вернуться к общему списку</a
+>
+
+{% endblock %}

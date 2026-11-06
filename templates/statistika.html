@@ -1,0 +1,85 @@
+{% extends "base.html" %} {% block title %}Статистика{% endblock %} {% block
+content %}
+
+<h2>Статистика журнала</h2>
+
+<h3>Общая информация</h3>
+
+<p>Принято анкет: {{ accepted_count }}</p>
+<p>Отклонено анкет: {{ rejected_count }}</p>
+
+<h3>Статистика по ролям</h3>
+
+{% if role_stats %}
+<table>
+  <tr>
+    <th>Роль</th>
+    <th>Количество</th>
+  </tr>
+  {% for role, count in role_stats.items() %}
+  <tr>
+    <td>{{ role }}</td>
+    <td>{{ count }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>Нет данных по ролям.</p>
+{% endif %}
+
+<h3>Статистика по группам студентов</h3>
+
+{% if group_stats %}
+<table>
+  <tr>
+    <th>Группа</th>
+    <th>Количество</th>
+  </tr>
+  {% for group, count in group_stats.items() %}
+  <tr>
+    <td>{{ group }}</td>
+    <td>{{ count }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>Нет данных по группам.</p>
+{% endif %}
+
+<h3>Статистика по кафедрам преподавателей</h3>
+
+{% if department_stats %}
+<table>
+  <tr>
+    <th>Кафедра</th>
+    <th>Количество</th>
+  </tr>
+  {% for department, count in department_stats.items() %}
+  <tr>
+    <td>{{ department }}</td>
+    <td>{{ count }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>Нет данных по кафедрам.</p>
+{% endif %}
+
+<h3>Отклонённые анкеты</h3>
+
+{% if rejected %}
+<table>
+  <tr>
+    <th>Исходная строка</th>
+    <th>Причина отклонения</th>
+  </tr>
+  {% for item in rejected %}
+  <tr>
+    <td>{{ item.raw }}</td>
+    <td>{{ item.reason }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>Отклонённых анкет нет.</p>
+{% endif %} {% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% block title %}Добавить анкету{% endblock %} {%
+block content %}
+
+<h2>Добавление анкеты</h2>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="POST" action="{{ url_for('get_questionary_form') }}">
+  <label for="role">Тип анкеты:</label>
+  <select name="role" id="role" required>
+    <option value="">Выберите тип</option>
+
+    <option
+      value="student"
+      {%
+      if
+      form_data.role == "student"
+      %}selected{%
+      endif
+      %}
+    >
+      Студент
+    </option>
+
+    <option
+      value="teacher"
+      {%
+      if
+      form_data.role =="teacher"
+      %}selected{%
+      endif
+      %}
+    >
+      Преподаватель
+    </option>
+  </select>
+
+  <label for="fio">ФИО:</label>
+  <input
+    type="text"
+    name="fio"
+    id="fio"
+    value="{{ form_data.fio or '' }}"
+    required
+  />
+
+  <label for="email">Email:</label>
+  <input
+    type="email"
+    name="email"
+    id="email"
+    value="{{ form_data.email or '' }}"
+    required
+  />
+
+  <label for="phone">Телефон:</label>
+  <input
+    type="text"
+    name="phone"
+    id="phone"
+    value="{{ form_data.phone or '' }}"
+    required
+  />
+
+  <label for="extra">Группа / кафедра:</label>
+  <input
+    type="text"
+    name="extra"
+    id="extra"
+    value="{{ form_data.extra or '' }}"
+    required
+  />
+
+  <button type="submit">Добавить анкету</button>
+</form>
+
+{% endblock %}

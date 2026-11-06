@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Главная — Журнал анкет{% endblock %}
+{% block content %}
+
+<h2>Принятые анкеты</h2>
+
+<p>Принято: {{ accepted_count }}</p>
+<p>Отклонено: {{ rejected_count }}</p>
+
+{% if anketi %}
+
+<table>
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>ФИО</th>
+      <th>Роль</th>
+      <th>Email</th>
+      <th>Телефон</th>
+      <th>Группа/Кафедра</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for anketa in anketi %}
+    <tr>
+      <td>{{ anketa.number }}</td>
+      <td>
+        <a href="{{ url_for('get_one_questionary', number=anketa.number) }}">
+          {{ anketa.fio }}
+        </a>
+      </td>
+      <td>{{ anketa.role }}</td>
+      <td>{{ anketa.email }}</td>
+      <td>{{ anketa.phone }}</td>
+      <td>
+        <a href="{{ url_for('get_students_by_group', name=anketa.extra) }}">
+          {{ anketa.extra }}
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+
+<p>Пока нет принятых анкет.</p>
+
+{% endif %} {% endblock %}

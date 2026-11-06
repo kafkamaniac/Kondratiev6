@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Анкета №{{ anketa.number }}{%
+endblock %} {% block content %}
+
+<h2>Анкета №{{ anketa.number }}</h2>
+
+<div class="anketa-info">
+  <p><strong>#:</strong> {{ anketa.number }}</p>
+  <p><strong>ФИО:</strong> {{ anketa.fio }}</p>
+  <p><strong>Роль:</strong> {{ anketa.role }}</p>
+  <p><strong>Email:</strong> {{ anketa.email }}</p>
+  <p><strong>Телефон:</strong> {{ anketa.phone }}</p>
+  <p><strong>Группа / кафедра:</strong> {{ anketa.extra }}</p>
+</div>
+
+<a href="{{ url_for('get_accepted_questionaries') }}">Вернуться к списку</a>
+
+{% endblock %}
